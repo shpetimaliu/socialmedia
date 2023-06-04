@@ -31,4 +31,7 @@ exports.home = (req, res) => {
   }
 };
 
-exports.logout = () => {};
+exports.logout = (req, res) => {
+  req.session.destroy();
+  res.redirect("/");
+};
