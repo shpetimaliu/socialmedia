@@ -16,7 +16,9 @@ exports.login = (req, res) => {
     .login()
     .then(function (result) {
       req.session.user = { username: user.data.username };
-      res.send(result);
+      req.session.save(() => {
+        res.redirect("/");
+      });
     })
     .catch(function (e) {
       res.send(e);
@@ -32,6 +34,7 @@ exports.home = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  req.session.destroy();
-  res.redirect("/");
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
 };
