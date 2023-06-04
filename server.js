@@ -2,10 +2,13 @@ const express = require("express");
 const app = express();
 const session = require("express-session");
 
+require("dotenv").config();
 const home = require("./routers/home");
 
+const secretSession = process.env.SESSION_SECRET;
+//session
 let sessionRun = session({
-  secret: "shpetim aliu",
+  secret: secretSession,
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true },
