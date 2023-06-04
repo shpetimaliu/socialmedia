@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-require("dotenv").config();
 
 const home = require("./routers/home");
 
