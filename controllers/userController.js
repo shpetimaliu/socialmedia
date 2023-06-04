@@ -14,12 +14,21 @@ exports.login = (req, res) => {
   let user = new User(req.body);
   user
     .login()
-    .then((result) => {
+    .then(function (result) {
+      req.session.user = { username: user.data.username };
       res.send(result);
     })
-    .catch((e) => {
+    .catch(function (e) {
       res.send(e);
     });
+};
+
+exports.home = (req, res) => {
+  if (req.session.user) {
+    res.send("Welcome to the SocialMedia Experiment");
+  } else {
+    res.render("home-template");
+  }
 };
 
 exports.logout = () => {};
