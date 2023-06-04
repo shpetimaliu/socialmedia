@@ -1,0 +1,1 @@
+I am working on creating a social media platform where users can create tweets, upload profile pictures, and write in real-time with other community members. It's just an experiment, and now it's in the initial phase where I connected the project with my GitHub (wish me luck 😂❤️).

@@ -1,0 +1,25 @@
+{
+  "name": "social-media",
+  "version": "1.0.0",
+  "description": "Social Media Experiment",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon db.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node db.js"
+  },
+  "author": "shputzz",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.1.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongodb": "^5.5.0",
+    "mongoose": "^7.2.2",
+    "nodemon": "^2.0.22",
+    "validator": "^13.9.0"
+  },
+  "keywords": []
+}
