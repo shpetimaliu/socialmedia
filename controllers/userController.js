@@ -25,7 +25,7 @@ exports.login = (req, res) => {
 
 exports.home = (req, res) => {
   if (req.session.user) {
-    res.send("Welcome to the SocialMedia Experiment");
+    res.render("home-dashboard", { username: req.session.user.username });
   } else {
     res.render("home-template");
   }
