@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const username = process.env.MONGODB_USERNAME;
 const password = process.env.MONGODB_PASSWORD;
-const dbName = process.env.dbName;
+const dbName = process.env.DATABASE_NAME;
 
 const uri = `mongodb+srv://${username}:${password}@cluster0.v1bgkee.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 
@@ -18,7 +18,7 @@ const connectDB = async function () {
     await client.connect();
     console.log("Connected with MongoDB");
 
-    module.exports = client.db(dbName);
+    module.exports = client;
 
     const app = require("./server");
     app.listen(process.env.PORT);

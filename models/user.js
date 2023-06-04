@@ -1,4 +1,6 @@
-const userCollect = require("../db").collection("users");
+const userCollect = require("../db")
+  .db(process.env.DATABASE_NAME)
+  .collection("users");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 
