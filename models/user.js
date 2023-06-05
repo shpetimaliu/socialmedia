@@ -113,6 +113,7 @@ User.prototype.login = function () {
           attemptLogin &&
           bcrypt.compareSync(this.data.password, attemptLogin.password)
         ) {
+          this.data = attemptLogin;
           this.getProfile();
           resolve("congrats!!");
         } else {
