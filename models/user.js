@@ -27,7 +27,7 @@ User.prototype.cleanUp = function () {
   };
 };
 
-User.prototype.validate = function () {
+User.prototype.validate = async function () {
   if (this.data.username == "") {
     this.errors.push("You must provide an username");
   }
@@ -54,6 +54,29 @@ User.prototype.validate = function () {
   }
   if (this.data.username.length > 100) {
     this.errors.push("Username cannot exceed 100 character");
+  }
+
+  // check for existing user -> kontrolloni për përdorues ekzistues
+  if (
+    this.data.username.length > 2 &&
+    this.data.username.length < 31 &&
+    validator.isAlphanumeric(this.data.username)
+  ) {
+    let usernameExist = await userCollect.findOne({
+      username: this.data.username,
+    });
+    if (usernameExist) {
+      this.errors.push("Username already exist");
+    }
+  }
+
+  if (validator.isEmail(this.data.email)) {
+    let emailExist = await userCollect.findOne({
+      email: this.data.email,
+    });
+    if (emailExist) {
+      this.errors.push("Email already exist");
+    }
   }
 };
 
