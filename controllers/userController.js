@@ -1,20 +1,30 @@
 const User = require("../models/user");
 
+exports.register = (req, res) => {
+  let user = new User(req.body);
+  user
+    .register()
+    .then(() => {
+      req.session.save(() => {
+        res.redirect("/");
+      });
+    })
+    .catch((errors) => {
+      req.flash("RegErrors", errors);
+      req.session.save(() => {
+        res.redirect("/");
+      });
+    });
+};
+
 exports.home = (req, res) => {
   if (req.session.user) {
     res.render("home-dashboard", { username: req.session.user.username });
   } else {
-    res.render("home-template", { errors: req.flash("errors") });
-  }
-};
-
-exports.register = (req, res) => {
-  let user = new User(req.body);
-  user.register();
-  if (user.errors.length) {
-    res.send(user.errors);
-  } else {
-    res.send("Thanks For register");
+    res.render("home-template", {
+      errors: req.flash("errors"),
+      RegErrors: req.flash("RegErrors"),
+    });
   }
 };
 

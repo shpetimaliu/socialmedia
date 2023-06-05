@@ -58,14 +58,26 @@ User.prototype.validate = function () {
 };
 
 User.prototype.register = function () {
-  this.validate();
-  this.cleanUp();
+  return new Promise((resolve, reject) => {
+    this.validate();
+    this.cleanUp();
 
-  if (!this.errors.length) {
-    let salt = bcrypt.genSaltSync(10);
-    this.data.password = bcrypt.hashSync(this.data.password, salt);
-    userCollect.insertOne(this.data);
-  }
+    if (this.errors.length) {
+      reject(this.errors);
+    } else {
+      let salt = bcrypt.genSaltSync(10);
+      this.data.password = bcrypt.hashSync(this.data.password, salt);
+
+      userCollect
+        .insertOne(this.data)
+        .then(() => {
+          resolve();
+        })
+        .catch((error) => {
+          reject(new Error("wrong", error));
+        });
+    }
+  });
 };
 
 User.prototype.login = function () {
