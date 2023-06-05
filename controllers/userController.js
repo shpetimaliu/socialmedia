@@ -2,7 +2,10 @@ const User = require("../models/user");
 
 exports.home = (req, res) => {
   if (req.session.user) {
-    res.render("home-dashboard", { username: req.session.user.username });
+    res.render("home-dashboard", {
+      username: req.session.user.username,
+      profile: req.session.user.profile,
+    });
   } else {
     res.render("home-template", {
       errors: req.flash("errors"),
@@ -16,7 +19,10 @@ exports.register = (req, res) => {
   user
     .register()
     .then(() => {
-      req.session.user = { username: user.data.username };
+      req.session.user = {
+        username: user.data.username,
+        profile: user.profile,
+      };
       req.session.save(() => {
         res.redirect("/");
       });
@@ -36,7 +42,10 @@ exports.login = (req, res) => {
   user
     .login()
     .then(function (result) {
-      req.session.user = { username: user.data.username };
+      req.session.user = {
+        profile: user.profile,
+        username: user.data.username,
+      };
       req.session.save(() => {
         res.redirect("/");
       });
