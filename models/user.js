@@ -3,6 +3,7 @@ const userCollect = require("../db")
   .collection("users");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const md5 = require("md5");
 
 let User = function (data) {
   this.data = data;
@@ -94,6 +95,7 @@ User.prototype.register = function () {
       let salt = bcrypt.genSaltSync(10);
       this.data.password = bcrypt.hashSync(this.data.password, salt);
       await userCollect.insertOne(this.data);
+      this.getProfile();
       resolve();
     } else {
       reject(this.errors);
@@ -111,6 +113,7 @@ User.prototype.login = function () {
           attemptLogin &&
           bcrypt.compareSync(this.data.password, attemptLogin.password)
         ) {
+          this.getProfile();
           resolve("congrats!!");
         } else {
           reject("Invalid user/password");
@@ -120,6 +123,10 @@ User.prototype.login = function () {
         reject("Please try again later");
       });
   });
+};
+
+User.prototype.getProfile = function () {
+  this.profile = `https://gravatar.com/avatar/${md5(this.data.email)}?s=80`;
 };
 
 module.exports = User;
