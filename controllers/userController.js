@@ -16,12 +16,15 @@ exports.register = (req, res) => {
   user
     .register()
     .then(() => {
+      req.session.user = { username: user.data.username };
       req.session.save(() => {
         res.redirect("/");
       });
     })
-    .catch((errors) => {
-      req.flash("RegErrors", errors);
+    .catch((RegErrors) => {
+      RegErrors.forEach((error) => {
+        req.flash("RegErrors", error);
+      });
       req.session.save(() => {
         res.redirect("/");
       });
