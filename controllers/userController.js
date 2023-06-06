@@ -1,6 +1,6 @@
 const User = require("../models/user");
 
-exports.loginRequire = (req, res) => {
+exports.loginRequire = (req, res, next) => {
   if (req.session.user) {
     next();
   } else {
