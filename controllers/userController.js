@@ -1,5 +1,16 @@
 const User = require("../models/user");
 
+exports.loginRequire = (req, res) => {
+  if (req.session.user) {
+    next();
+  } else {
+    req.flash("errors", "You must be logged in to create a post");
+    req.session.save(function () {
+      res.redirect("/");
+    });
+  }
+};
+
 exports.home = (req, res) => {
   if (req.session.user) {
     res.render("home-dashboard", {
