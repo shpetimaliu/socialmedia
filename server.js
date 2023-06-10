@@ -4,9 +4,6 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 
-const createPost = require("./routers/post");
-const home = require("./routers/home");
-
 const secretSession = process.env.SESSION_SECRET;
 
 //session
@@ -24,10 +21,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(sessionRun);
 app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.user = req.session.user;
+  next();
+});
 app.set("views", "views");
 app.set("view engine", "ejs");
 
 // Routers
+const createPost = require("./routers/post");
+const home = require("./routers/home");
 app.use("/", home);
 app.use("/", createPost);
 

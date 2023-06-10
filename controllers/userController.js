@@ -13,10 +13,7 @@ exports.loginRequire = (req, res, next) => {
 
 exports.home = (req, res) => {
   if (req.session.user) {
-    res.render("home-dashboard", {
-      username: req.session.user.username,
-      profile: req.session.user.profile,
-    });
+    res.render("home-dashboard");
   } else {
     res.render("home-template", {
       errors: req.flash("errors"),
