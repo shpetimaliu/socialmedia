@@ -30,7 +30,9 @@ exports.register = (req, res) => {
       req.session.user = {
         username: user.data.username,
         profile: user.profile,
+        _id: user.data._id,
       };
+      console.log(user.data._id);
       req.session.save(() => {
         res.redirect("/");
       });
@@ -53,7 +55,9 @@ exports.login = (req, res) => {
       req.session.user = {
         profile: user.profile,
         username: user.data.username,
+        _id: user.data._id,
       };
+
       req.session.save(() => {
         res.redirect("/");
       });
