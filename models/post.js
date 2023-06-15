@@ -46,7 +46,7 @@ Post.prototype.create = function () {
         })
         .catch((err) => {
           this.errors.push(
-            "Something went wrong, Please try again later." + err
+            `Something went wrong, Please try again later. ${err}`
           );
           reject(this.errors);
         });
