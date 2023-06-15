@@ -56,4 +56,6 @@ Post.prototype.create = function () {
   });
 };
 
+Post.prototype.viewSinglePost = function () {};
+
 module.exports = Post;
