@@ -2,6 +2,8 @@ const postCollection = require("../db")
   .db(process.env.DATABASE_NAME)
   .collection("posts");
 
+const ObjectID = require("mongodb").ObjectId;
+
 let Post = function (data, req) {
   this.data = data;
   this.errors = [];
@@ -20,7 +22,7 @@ Post.prototype.cleanUp = function () {
     title: this.data.title.trim(),
     body: this.data.body.trim(),
     createDate: new Date(),
-    author: this.userId,
+    author: ObjectID(this.userId),
   };
 };
 
@@ -56,6 +58,20 @@ Post.prototype.create = function () {
   });
 };
 
-Post.prototype.viewSinglePost = function () {};
+Post.findBySingleId = function (id) {
+  return new Promise(async function (resolve, reject) {
+    if (typeof id !== "string" || !ObjectID.isValid(id)) {
+      reject();
+      return;
+    }
+
+    let post = await postCollection.findOne({ _id: new ObjectID(id) });
+    if (post) {
+      resolve(post);
+    } else {
+      reject(`No Post found with the ID of "${id}"`);
+    }
+  });
+};
 
 module.exports = Post;

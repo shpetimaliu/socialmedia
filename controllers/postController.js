@@ -17,6 +17,11 @@ exports.create = function (req, res) {
     });
 };
 
-exports.viewSinglePost = function (req, res) {
-  res.render("post");
+exports.viewSinglePost = async function (req, res) {
+  try {
+    let post = await Post.findBySingleId(req.params.id);
+    res.render("post", { post: post });
+  } catch {
+    res.send("Post not found!");
+  }
 };
