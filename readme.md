@@ -7,3 +7,6 @@ I am working on creating a social media platform where users can create tweets, 
 
 - 05, june 2023
 - Today I implemented Gravatar for the profile picture and if you use your Gravatar email for registration the webapp automatically uses your gravatar picture for the profile picture
+
+- 02, july 2023
+- Due to the real projects that I am working on for some of my clients, it is impossible that I can focus on this project as well, but in a short time I will start where I left off.
