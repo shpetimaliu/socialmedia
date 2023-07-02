@@ -6,7 +6,7 @@ exports.createPostView = function (req, res) {
 
 exports.create = function (req, res) {
   let post = new Post(req.body, req);
-  console.log(req.session.user._id);
+  console.log(req.session.user._id.toString());
   post
     .create()
     .then(() => {
@@ -19,7 +19,7 @@ exports.create = function (req, res) {
 
 exports.viewSinglePost = async function (req, res) {
   try {
-    let post = await Post.findBySingleId(req.params.id);
+    let post = await Post.findBySingleId(req.params.id, req);
     res.render("post", { post: post });
   } catch {
     res.send("Post not found!");

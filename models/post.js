@@ -2,12 +2,11 @@ const postCollection = require("../db")
   .db(process.env.DATABASE_NAME)
   .collection("posts");
 
-const ObjectID = require("mongodb").ObjectId;
-
 let Post = function (data, req) {
   this.data = data;
   this.errors = [];
-  this.userId = req.session.user._id; // Merrni userID-në nga session cookie
+  this.userId =
+    req.session && req.session.user && req.session.user._id.toString(); // Merrni userID-në nga session cookie dhe konvertoni në string
 };
 
 Post.prototype.cleanUp = function () {
@@ -22,7 +21,7 @@ Post.prototype.cleanUp = function () {
     title: this.data.title.trim(),
     body: this.data.body.trim(),
     createDate: new Date(),
-    author: ObjectID(this.userId),
+    author: this.userId,
   };
 };
 
@@ -58,14 +57,16 @@ Post.prototype.create = function () {
   });
 };
 
-Post.findBySingleId = function (id) {
+Post.findBySingleId = function (id, req) {
   return new Promise(async function (resolve, reject) {
-    if (typeof id !== "string" || !ObjectID.isValid(id)) {
+    this.userId =
+      req.session && req.session.user && req.session.user._id.toString();
+    if (typeof id != "string" || !id.match(/^[0-9a-fA-F]{24}$/)) {
       reject();
       return;
     }
 
-    let post = await postCollection.findOne({ _id: new ObjectID(id) });
+    let post = await postCollection.findOne({ _id: id });
     if (post) {
       resolve(post);
     } else {
