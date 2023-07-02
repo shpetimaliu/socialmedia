@@ -58,35 +58,17 @@ Post.prototype.create = function () {
   });
 };
 
-// Post.findBySingleId = function (id, req) {
-//   return new Promise(async function (resolve, reject) {
-//     this.userId =
-//       req.session && req.session.user && req.session.user._id.toString();
-//     if (typeof id != "string" || !id.match(/^[0-9a-fA-F]{24}$/)) {
-//       reject();
-//       return;
-//     }
-//
-//     let post = await postCollection.findOne({ _id: id });
-//     if (post) {
-//       resolve(post);
-//     } else {
-//       reject(`No Post found with the ID of "${id}"`);
-//     }
-//   });
-// };
-
-Post.findSignleById = function (id) {
+Post.findBySingleId = function (id) {
   return new Promise(async (resolve, reject) => {
     if (typeof id != "string" || !ObjectId.isValid(id)) {
       reject();
       return;
     }
-    let post = postCollection.findOne(await { _id: new ObjectId(id) });
+    let post = await postCollection.findOne({ _id: new ObjectId(id) });
     if (post) {
       resolve(post);
     } else {
-      reject();
+      reject("No Post found with the ID of " + id);
     }
   });
 };
