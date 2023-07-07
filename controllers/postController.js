@@ -22,6 +22,6 @@ exports.viewSinglePost = async function (req, res) {
     let post = await Post.findBySingleId(req.params.id, req);
     res.render("post", { post: post });
   } catch {
-    res.send("Post not found!");
+    res.render("404");
   }
 };
