@@ -8,7 +8,7 @@ let Post = function (data, req) {
   this.data = data;
   this.errors = [];
   this.userId =
-    req.session && req.session.user && req.session.user._id.toString(); // Merrni userID-në nga session cookie dhe konvertoni në string
+    req.session && req.session.user && new ObjectId(req.session.user._id);
 };
 
 Post.prototype.cleanUp = function () {
@@ -65,6 +65,7 @@ Post.findBySingleId = function (id) {
       reject();
       return;
     }
+
     let posts = await postCollection
       .aggregate([
         { $match: { _id: new ObjectId(id) } },
