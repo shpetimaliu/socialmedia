@@ -5,9 +5,15 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const md5 = require("md5");
 
-let User = function (data) {
+let User = function (data, getProfile) {
   this.data = data;
   this.errors = [];
+  if (getProfile == undefined) {
+    getProfile = false;
+  }
+  if (getProfile) {
+    this.getProfile();
+  }
 };
 
 User.prototype.cleanUp = function () {

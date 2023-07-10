@@ -1,6 +1,5 @@
-const { ObjectID } = require("mongodb");
 const { ObjectId } = require("mongodb");
-const { post } = require("../server");
+const User = require("./user");
 const postCollection = require("../db")
   .db(process.env.DATABASE_NAME)
   .collection("posts");
@@ -62,7 +61,7 @@ Post.prototype.create = function () {
 
 Post.findBySingleId = function (id) {
   return new Promise(async (resolve, reject) => {
-    if (typeof id != "string" || !ObjectId.isValid(id)) {
+    if (typeof id !== "string" || !ObjectId.isValid(id)) {
       reject();
       return;
     }
@@ -82,11 +81,31 @@ Post.findBySingleId = function (id) {
             title: 1,
             body: 1,
             createDate: 1,
-            author: { $arrayElemAt: ["$authorDocument", 0] },
+            author: {
+              $cond: [
+                { $eq: [{ $size: "$authorDocument" }, 0] },
+                null, // ose vlerë alternative
+                { $arrayElemAt: ["$authorDocument", 0] },
+              ],
+            },
           },
         },
       ])
       .toArray();
+
+    posts = posts.map((post) => {
+      if (post.author !== null) {
+        post.author = {
+          username: post.author.username,
+          profile: new User(post.author, true).profile,
+        };
+      } else {
+        post.author = null; // Ose vlerë alternative
+      }
+
+      return post;
+    });
+
     if (posts.length) {
       console.log(posts[0]);
       resolve(posts[0]);
@@ -95,4 +114,5 @@ Post.findBySingleId = function (id) {
     }
   });
 };
+
 module.exports = Post;
