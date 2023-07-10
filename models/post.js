@@ -1,3 +1,4 @@
+const { ObjectID } = require("mongodb");
 const { ObjectId } = require("mongodb");
 const postCollection = require("../db")
   .db(process.env.DATABASE_NAME)
@@ -64,9 +65,21 @@ Post.findBySingleId = function (id) {
       reject();
       return;
     }
-    let post = await postCollection.findOne({ _id: new ObjectId(id) });
-    if (post) {
-      resolve(post);
+    let posts = await postCollection
+      .aggregate([
+        { $match: { _id: new ObjectId(id) } },
+        {
+          $lookup: {
+            from: "users",
+            localField: "author",
+            foreignField: "_id",
+            as: "authorDocument",
+          },
+        },
+      ])
+      .toArray();
+    if (posts.length) {
+      resolve(posts[0]);
     } else {
       reject("No Post found with the ID of " + id);
     }
