@@ -1,5 +1,6 @@
 const { ObjectID } = require("mongodb");
 const { ObjectId } = require("mongodb");
+const { post } = require("../server");
 const postCollection = require("../db")
   .db(process.env.DATABASE_NAME)
   .collection("posts");
@@ -76,9 +77,18 @@ Post.findBySingleId = function (id) {
             as: "authorDocument",
           },
         },
+        {
+          $project: {
+            title: 1,
+            body: 1,
+            createDate: 1,
+            author: { $arrayElemAt: ["$authorDocument", 0] },
+          },
+        },
       ])
       .toArray();
     if (posts.length) {
+      console.log(posts[0]);
       resolve(posts[0]);
     } else {
       reject("No Post found with the ID of " + id);
