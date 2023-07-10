@@ -81,13 +81,7 @@ Post.findBySingleId = function (id) {
             title: 1,
             body: 1,
             createDate: 1,
-            author: {
-              $cond: [
-                { $eq: [{ $size: "$authorDocument" }, 0] },
-                null, // ose vlerë alternative
-                { $arrayElemAt: ["$authorDocument", 0] },
-              ],
-            },
+            author: { $arrayElemAt: ["$authorDocument", 0] },
           },
         },
       ])
@@ -99,10 +93,7 @@ Post.findBySingleId = function (id) {
           username: post.author.username,
           profile: new User(post.author, true).profile,
         };
-      } else {
-        post.author = null; // Ose vlerë alternative
       }
-
       return post;
     });
 
