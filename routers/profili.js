@@ -9,4 +9,6 @@ const {
   profilePostsScreen,
 } = require("../controllers/userController");
 
-router.get("/profil/:username", userExisting, profilePostsScreen);
+router.get("/profili/:username", userExisting, profilePostsScreen);
+
+module.exports = router;

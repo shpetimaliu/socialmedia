@@ -31,8 +31,10 @@ app.set("view engine", "ejs");
 // Routers
 const createPost = require("./routers/post");
 const home = require("./routers/home");
+const profili = require("./routers/profili");
 app.use("/", home);
 app.use("/", createPost);
+app.use("/", profili);
 
 // Listen
 module.exports = app;

@@ -75,3 +75,11 @@ exports.logout = (req, res) => {
     res.redirect("/");
   });
 };
+
+exports.userExisting = (req, res, next) => {
+  next();
+};
+
+exports.profilePostsScreen = (req, res) => {
+  res.render("profili");
+};
