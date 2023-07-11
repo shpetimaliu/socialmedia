@@ -77,7 +77,14 @@ exports.logout = (req, res) => {
 };
 
 exports.userExisting = (req, res, next) => {
-  next();
+  User.findByUsername(req.params.username)
+    .then((userDocument) => {
+      req.profileUser = userDocument;
+      next();
+    })
+    .catch(() => {
+      res.render("404");
+    });
 };
 
 exports.profilePostsScreen = (req, res) => {
