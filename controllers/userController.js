@@ -88,5 +88,8 @@ exports.userExisting = (req, res, next) => {
 };
 
 exports.profilePostsScreen = (req, res) => {
-  res.render("profili");
+  res.render("profili", {
+    profileUsername: req.profileUser.username,
+    profileProfili: req.profileUser.profile,
+  });
 };
