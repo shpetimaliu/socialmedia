@@ -5,4 +5,8 @@ const {
   login,
   logout,
   home,
+  userExisting,
+  profilePostsScreen,
 } = require("../controllers/userController");
+
+router.get("/profil/:username", userExisting, profilePostsScreen);
