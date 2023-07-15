@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Post = require("../models/post");
+const { post } = require("../server");
 
 exports.loginRequire = (req, res, next) => {
   if (req.session.user) {
@@ -89,8 +90,15 @@ exports.userExisting = (req, res, next) => {
 };
 
 exports.profilePostsScreen = (req, res) => {
-  res.render("profili", {
-    profileUsername: req.profileUser.username,
-    profileProfili: req.profileUser.profile,
-  });
+  Post.findByAuthorId(req.profileUser._id)
+    .then((posts) => {
+      res.render("profili", {
+        posts: posts,
+        profileUsername: req.profileUser.username,
+        profileProfili: req.profileUser.profile,
+      });
+    })
+    .catch(() => {
+      res.render("404");
+    });
 };
