@@ -15,44 +15,23 @@
   </h2>
 
   <div class="profile-nav nav nav-tabs pt-2 mb-4">
-    <a href="#" class="profile-nav-link nav-item nav-link">Posts: 3</a>
-    <a href="#" class="profile-nav-link nav-item nav-link active"
-      >Followers: 3</a
-    >
+    <a href="#" class="profile-nav-link nav-item nav-link active">Posts: 3</a>
+    <a href="#" class="profile-nav-link nav-item nav-link">Followers: 3</a>
     <a href="#" class="profile-nav-link nav-item nav-link">Following: 2</a>
   </div>
 
   <div class="list-group">
+    <% posts.forEach(function(post) { %>
     <a
-      href="/post/64a84154831cd28aac7d9a44"
+      href="/post/<%= post._id %>"
       class="list-group-item list-group-item-action"
     >
-      <img
-        class="avatar-tiny"
-        src="https://gravatar.com/avatar/bd8860d038dd87388b555018a7d70df2?s=80"
-      />
-      <strong>Example Post #1</strong> on 15/07/2023
+      <img class="avatar-tiny" src="<%= post.author.profile %>" />
+      <strong><%= post.title %></strong> on <%= post.createDate.getMonth() + 1
+      %>/<%= post.createDate.getDate() %>/<%= post.createDate.getFullYear() %>
     </a>
-    <a
-      href="/post/64a84154831cd28aac7d9a44"
-      class="list-group-item list-group-item-action"
-    >
-      <img
-        class="avatar-tiny"
-        src="https://gravatar.com/avatar/bd8860d038dd87388b555018a7d70df2?s=80"
-      />
-      <strong>Example Post #1</strong> on 15/07/2023
-    </a>
-    <a
-      href="/post/64a84154831cd28aac7d9a44"
-      class="list-group-item list-group-item-action"
-    >
-      <img
-        class="avatar-tiny"
-        src="https://gravatar.com/avatar/bd8860d038dd87388b555018a7d70df2?s=80"
-      />
-      <strong>Example Post #1</strong> on 15/07/2023
-    </a>
+
+    <% }) %>
   </div>
 </div>
 
