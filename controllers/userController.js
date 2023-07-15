@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Post = require("../models/post");
 
 exports.loginRequire = (req, res, next) => {
   if (req.session.user) {
