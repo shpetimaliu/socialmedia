@@ -26,6 +26,8 @@ exports.viewSinglePost = async function (req, res) {
   }
 };
 
-exports.viewEditPost = function (req, res) {
+exports.viewEditPost = async function (req, res) {
+  await Post.findBySingleId(req.params.id);
+
   res.render("edit-post");
 };
