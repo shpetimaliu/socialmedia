@@ -82,6 +82,7 @@ Post.reusablePostQuery = function (uniqueOperations, visitorId) {
     ]);
 
     let posts = await postCollection.aggregate(aggOperations).toArray();
+    console.log(posts);
 
     posts = posts.map((post) => {
       post.isVisitorOwner = new ObjectId(post.authorId).equals(visitorId);
