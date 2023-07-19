@@ -59,7 +59,7 @@ Post.prototype.create = function () {
   });
 };
 
-Post.reusablePostQuery = function (uniqueOperations) {
+Post.reusablePostQuery = function (uniqueOperations, visitorId) {
   return new Promise(async (resolve, reject) => {
     let aggOperations = uniqueOperations.concat([
       {
@@ -75,6 +75,7 @@ Post.reusablePostQuery = function (uniqueOperations) {
           title: 1,
           body: 1,
           createDate: 1,
+          authorId: "$author",
           author: { $arrayElemAt: ["$authorDocument", 0] },
         },
       },
@@ -83,12 +84,12 @@ Post.reusablePostQuery = function (uniqueOperations) {
     let posts = await postCollection.aggregate(aggOperations).toArray();
 
     posts = posts.map((post) => {
-      if (post.author !== null) {
-        post.author = {
-          username: post.author.username,
-          profile: new User(post.author, true).profile,
-        };
-      }
+      post.isVisitorOwner = post.authorId.equals(visitorId);
+
+      post.author = {
+        username: post.author.username,
+        profile: new User(post.author, true).profile,
+      };
       return post;
     });
 
@@ -96,16 +97,17 @@ Post.reusablePostQuery = function (uniqueOperations) {
   });
 };
 
-Post.findBySingleId = function (id) {
+Post.findBySingleId = function (id, visitorId) {
   return new Promise(async (resolve, reject) => {
     if (typeof id !== "string" || !ObjectId.isValid(id)) {
       reject();
       return;
     }
 
-    let posts = await Post.reusablePostQuery([
-      { $match: { _id: new ObjectId(id) } },
-    ]);
+    let posts = await Post.reusablePostQuery(
+      [{ $match: { _id: new ObjectId(id) } }],
+      visitorId
+    );
 
     if (posts.length) {
       console.log(posts[0]);

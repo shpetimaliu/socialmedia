@@ -19,7 +19,7 @@ exports.create = function (req, res) {
 
 exports.viewSinglePost = async function (req, res) {
   try {
-    let post = await Post.findBySingleId(req.params.id, req);
+    let post = await Post.findBySingleId(req.params.id, req.visitorId);
     res.render("post", { post: post });
   } catch {
     res.render("404");
