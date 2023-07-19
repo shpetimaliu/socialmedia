@@ -25,3 +25,5 @@ exports.viewSinglePost = async function (req, res) {
     res.render("404");
   }
 };
+
+exports.viewEditPost = function () {};
